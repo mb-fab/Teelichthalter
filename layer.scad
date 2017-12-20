@@ -1,6 +1,7 @@
 
 include <config.scad>;
 use <bottom.scad>;
+use <puzzle.scad>;
 
 module layer()
 {
@@ -8,16 +9,12 @@ module layer()
     {
         bottom();
 
-        offset_x = -body_x/2;
-        for (i = [1:hole_count])
-        {
-            translate([
-                offset_x + i*spacing_x + (2*i-1)*hole_radius,
-                0,
-                material_z/2
-                ])
-            cylinder(r=hole_radius, h=2*material_z, center=true);
-        }
+        translate([
+            -puzzle_nose_height()/2,
+            puzzle_nose_height()/2,
+            0
+            ])
+        cylinder(r=hole_radius, h=3*material_z, center=true);
     }
 }
 

@@ -4,7 +4,12 @@ include <config.scad>;
 /**
  * This module generates a puzzle nose
  */
-module puzzle_nose(r1=5, r2=3, width=20, angle=45)
+module puzzle_nose(
+            r1=puzzle_r1,
+            r2=puzzle_r2,
+            width=puzzle_width,
+            angle=puzzle_angle
+            )
 {
     // Upper and lower circle touching point
     px = -width/2 + cos(angle)*r1;
@@ -45,5 +50,12 @@ module puzzle_nose(r1=5, r2=3, width=20, angle=45)
         cylinder(r=r1, h=material_z+2*nothing, center=true);
     }
 }
+
+function puzzle_nose_height(
+            r1=puzzle_r1,
+            r2=puzzle_r2,
+            angle=puzzle_angle
+            )
+= r1 + r1*sin(angle) + r2 + r2*sin(angle);
 
 puzzle_nose(r1=3, r2=2, width=12, angle=80);
