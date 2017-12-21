@@ -2,6 +2,24 @@
 include <config.scad>;
 
 /**
+ * Generates half a cylinder streched in Y direction
+ * to cut away from the bottom half of the puzzle body
+ * in order to smoothen the transition from
+ * the puzzle notch to the rest of the piece.
+ */
+module puzzle_nose_expansion_smoothener(width, r1, expansion)
+{
+    intersection()
+    {
+        scale([1, r1/(r1-expansion), 1])
+        cylinder(r=r1-expansion, h=material_z*2+nothing, center=true);
+
+        translate([0, -r1/2, 0])
+        cube([2*r1, r1, material_z*2+nothing], center=true);
+    }
+}
+
+/**
  * This module generates a puzzle nose
  */
 module puzzle_nose(
@@ -61,9 +79,25 @@ module puzzle_nose(
         cylinder(r=r1-expansion, h=material_z+2*nothing, center=true);
         translate([width/2, r1, 0])
         cylinder(r=r1-expansion, h=material_z+2*nothing, center=true);
+
+        // Smoothen the transition at the nose bottom
+        if (expansion > 0)
+        {
+            // Left transition smoothener
+            translate([-width/2, r1, 0])
+            puzzle_nose_expansion_smoothener(width, r1, expansion);
+
+            // Right transition smoothener
+            translate([+width/2, r1, 0])
+            puzzle_nose_expansion_smoothener(width, r1, expansion);
+        }
     }
 }
 
+/**
+ * Returns the calculated height of a puzzle nose
+ * given the provided parameters
+ */
 function puzzle_nose_height(
             r1=puzzle_r1,
             r2=puzzle_r2,
