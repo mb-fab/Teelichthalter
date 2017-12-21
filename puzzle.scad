@@ -8,7 +8,8 @@ module puzzle_nose(
             r1=puzzle_r1,
             r2=puzzle_r2,
             width=puzzle_width,
-            angle=puzzle_angle
+            angle=puzzle_angle,
+            expansion=0
             )
 {
     // Upper and lower circle touching point
@@ -21,33 +22,45 @@ module puzzle_nose(
 
     // Upper circles
     translate([x2, y2, 0])
-    cylinder(r=r2, h=material_z, center=true);
+    cylinder(r=r2+expansion, h=material_z, center=true);
     translate([-x2, y2, 0])
-    cylinder(r=r2, h=material_z, center=true);
+    cylinder(r=r2+expansion, h=material_z, center=true);
 
     // Outer nose edge
     translate([0, y2, 0])
     cube([
         2*abs(x2),
-        2*r2,
+        2*(r2+expansion),
         material_z
         ], center=true);
 
     difference()
     {
         // Puzzle body
-        translate([0, py/2, 0])
-        cube([
-            width,
-            py,
-            material_z
-            ], center=true);
+        union()
+        {
+            // Lower half of the body
+            translate([0, r1/2 + nothing, 0])
+            cube([
+                width,
+                r1 + 2*nothing,
+                material_z
+                ], center=true);
+
+            // Upper half of the body
+            translate([0, 3/2*r1 + nothing, 0])
+            cube([
+                2*abs(px),
+                r1 + 2*nothing,
+                material_z
+                ], center=true);
+        }
         
         // Lower circles
         translate([-width/2, r1, 0])
-        cylinder(r=r1, h=material_z+2*nothing, center=true);
+        cylinder(r=r1-expansion, h=material_z+2*nothing, center=true);
         translate([width/2, r1, 0])
-        cylinder(r=r1, h=material_z+2*nothing, center=true);
+        cylinder(r=r1-expansion, h=material_z+2*nothing, center=true);
     }
 }
 

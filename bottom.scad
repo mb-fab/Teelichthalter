@@ -15,13 +15,17 @@ module bottom()
         // Bottom nose cutout
         translate([0, -body_y/2-nothing, 0])
         scale([1, 1, 1.1])
-        puzzle_nose();
+        puzzle_nose(
+            expansion=puzzle_notch_expansion
+            );
 
         // Right nose cutout
         translate([body_x/2+nothing, 0, 0])
         rotate(90)
         scale([1, 1, 1.1])
-        puzzle_nose();
+        puzzle_nose(
+            expansion=puzzle_notch_expansion
+            );
     }
 
     // Top nose
