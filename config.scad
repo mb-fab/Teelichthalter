@@ -18,3 +18,6 @@ puzzle_r1 = 3;
 puzzle_r2 = 3;
 puzzle_width = 25;
 puzzle_angle = 80;
+
+// Number of model copies to fabricate
+copies = 4;

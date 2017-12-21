@@ -1,1 +1,8 @@
+
+# Temporary
 *.scad.??????
+
+# Generated
+*.svg
+*.png
+
